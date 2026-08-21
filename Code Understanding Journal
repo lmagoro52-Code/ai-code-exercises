@@ -1,0 +1,274 @@
+Code Understanding Journal
+Task Management System
+
+Introduction
+
+This journal records my understanding of the Task Management System project. I used it to understand how the different Python files work together, how tasks are created and stored, and how users interact with the system through the command line.
+
+At first, some parts of the project were confusing to me, especially the imports and how the different files communicate with each other. I worked through the errors and tested the program to make sure the main parts were working correctly.
+
+---
+
+1. Project Structure
+
+The project contains four main Python files:
+
+* `cli.py`
+* `task_manager.py`
+* `models.py`
+* `storage.py`
+
+There is also a `test_task_manager.py` file that contains the tests for the Task Manager.
+
+The `tasks.json` file is used to store the tasks so that they are not lost when the program is closed.
+
+---
+
+2. Understanding `models.py`
+
+The `models.py` file defines the main objects used by the Task Manager.
+
+It contains:
+
+* `TaskPriority`
+* `TaskStatus`
+* `Task`
+
+TaskPriority
+
+`TaskPriority` is an Enum that gives tasks four priority levels:
+
+* LOW = 1
+* MEDIUM = 2
+* HIGH = 3
+* URGENT = 4
+
+I understand this as a way of making the priority values easier to work with instead of using random numbers throughout the program.
+
+TaskStatus
+
+`TaskStatus` controls the current state of a task:
+
+* TODO
+* IN_PROGRESS
+* REVIEW
+* DONE
+
+Task
+
+The `Task` class represents an individual task. When a task is created, it receives a unique ID using `uuid`.
+
+A task also contains:
+
+* title
+* description
+* priority
+* status
+* creation date
+* update date
+* due date
+* completion date
+* tags
+
+The `mark_as_done()` method changes the task's status to `DONE` and records when it was completed.
+
+The `is_overdue()` method checks whether a task has passed its due date and has not been completed.
+
+---
+ 3. Understanding `storage.py`
+
+The `storage.py` file is responsible for saving and loading tasks.
+
+The Task Manager uses a JSON file called `tasks.json`.
+
+I learned that Python objects such as `Task`, `datetime`, and Enum values cannot simply be saved directly to JSON. The program therefore uses:
+
+* `TaskEncoder`
+* `TaskDecoder`
+
+The `TaskEncoder` converts task information into a format that can be stored in JSON.
+
+The `TaskDecoder` does the opposite. It reads the JSON data and turns it back into `Task` objects.
+
+The `TaskStorage` class provides methods for:
+
+* adding tasks
+* getting a task
+* updating a task
+* deleting a task
+* getting all tasks
+* filtering tasks by status
+* filtering tasks by priority
+* finding overdue tasks
+
+This helped me understand that the storage file is separate from the main task management logic.
+
+---
+ 4. Understanding `task_manager.py`
+
+The `task_manager.py` file contains the main business logic of the application.
+
+The `TaskManager` class connects the task model to the storage system.
+
+It allows the program to:
+
+* create tasks
+* list tasks
+* update task status
+* update task priority
+* update due dates
+* delete tasks
+* add tags
+* remove tags
+* show task details
+* calculate statistics
+
+For example, when I create a task through the command line, `TaskManager` creates the `Task` object and sends it to `TaskStorage`, which saves it in `tasks.json`.
+
+I also learned how the program calculates statistics such as the total number of tasks, tasks by status, tasks by priority, overdue tasks, and recently completed tasks.
+
+---
+
+5. Understanding `cli.py`
+
+The `cli.py` file is the part of the project that the user interacts with.
+
+It uses Python's `argparse` module to create commands.
+
+The commands include:
+
+* `create`
+* `list`
+* `update-status`
+* `update-priority`
+* `update-due-date`
+* `add-tag`
+* `remove-tag`
+* `show`
+* `delete`
+* `stats`
+
+For example, a user can create a task using:
+
+```text
+python cli.py create "Test Task"
+```
+
+The CLI takes the information entered by the user and passes it to `TaskManager`.
+
+I also learned that `format_task()` is used to make the task information easier to read when it is displayed in the terminal.
+
+---
+
+6. Problems I Found and Fixed
+
+One of the main problems I encountered was an import error.
+
+I originally tried using:
+
+```text
+from task_manager.task_manager import TaskManager
+```
+
+This caused the error:
+
+```text
+ModuleNotFoundError: No module named 'task_manager.task_manager'
+```
+
+I eventually understood that my files were located directly in the Downloads folder rather than inside a `task_manager` package.
+
+I changed the import to:
+
+```text
+from task_manager import TaskManager
+```
+
+After making this change, running:
+
+```text
+python cli.py
+```
+
+worked successfully.
+
+Another issue was that the command names in the code did not originally match the README. The README required commands such as:
+
+```text
+update-status
+update-priority
+update-due-date
+add-tag
+remove-tag
+```
+
+The code originally used shorter names such as `status`, `priority`, `due`, `tag`, and `untag`.
+
+I changed the CLI commands so that they match the README.
+
+---
+
+7. Testing the Program
+
+I tested the CLI by running:
+
+```text
+python cli.py
+```
+
+The program displayed the Task Manager help menu, which confirmed that the CLI was running correctly.
+
+I also tested the task creation command and the program created a `tasks.json` file.
+
+The project contains a test file called:
+
+```text
+test_task_manager.py
+```
+
+The README refers to a `tests` folder, but my current project contains the test file directly in the Downloads folder. Because of this, the README command:
+
+```text
+python -m unittest discover tests
+```
+
+does not work with my current folder structure.
+
+The appropriate command for my current structure is:
+
+```text
+python -m unittest -v test_task_manager.py
+```
+
+This allows me to see each test and whether it passes or fails.
+
+---
+
+8. What I Learned
+
+This project helped me understand how a Python application can be separated into different files instead of putting everything into one large program.
+
+I learned that:
+
+* `models.py` defines the objects and their behaviour.
+* `storage.py` handles saving and loading information.
+* `task_manager.py` contains the main application logic.
+* `cli.py` handles user commands.
+* `test_task_manager.py` checks whether the functionality works correctly.
+* `tasks.json` stores the task information.
+
+I also learned that folder structure and imports are important in Python. An import can work in one project structure but fail in another.
+
+Another important lesson for me was learning how to read error messages. The `ModuleNotFoundError` initially looked complicated, but it showed me exactly what Python was unable to find.
+
+---
+
+9. My Reflection
+
+At the beginning, I did not fully understand how all the files connected to each other. I mainly focused on getting the program to run, but while fixing the errors I started understanding what each file was responsible for.
+
+The biggest thing I learned was that fixing code is not only about changing lines until the error disappears. I need to understand why the error happened and how the different parts of the project are supposed to work together.
+
+I also learned the importance of testing after making changes. Getting `python cli.py` to display the help menu showed that the CLI could start, but running the unit tests is what will give me more confidence that the individual functions are working correctly.
+
+Overall, I now have a better understanding of how the Task Management System works from the user's command all the way through to the task being created, managed, and stored.
