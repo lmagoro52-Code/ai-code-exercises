@@ -272,3 +272,51 @@ The biggest thing I learned was that fixing code is not only about changing line
 I also learned the importance of testing after making changes. Getting `python cli.py` to display the help menu showed that the CLI could start, but running the unit tests is what will give me more confidence that the individual functions are working correctly.
 
 Overall, I now have a better understanding of how the Task Management System works from the user's command all the way through to the task being created, managed, and stored.
+
+
+Algorithm Deconstruction Challenge – Task List Merging
+
+For this exercise, I chose the Task List Merging algorithm from my Task Management System. The purpose of this algorithm is to compare tasks stored locally with tasks stored remotely and combine them into one updated task list.
+
+I used AI to help me understand how the merge_task_lists() and resolve_task_conflict() functions work. I learned that the algorithm first collects all unique task IDs from both the local and remote lists. It then checks whether each task exists locally, remotely, or in both locations.
+
+If a task only exists locally, it is marked to be created remotely. If it only exists remotely, it is marked to be created locally. When a task exists in both places, the algorithm compares the updated_at timestamps to determine which version is generally newer.
+
+Code Example 1 – Finding All Task IDs
+all_task_ids = set(local_tasks.keys()) | set(remote_tasks.keys())
+
+This line combines the task IDs from the local and remote task lists. The | operator performs a set union, which means duplicate task IDs are removed.
+
+For example:
+
+Local:   1, 2, 3
+Remote:  2, 3, 4
+
+Result:  1, 2, 3, 4
+
+This allows the algorithm to check every task, including tasks that only exist on one side.
+
+Code Example 2 – Resolving a Newer Task
+if remote_task.updated_at > local_task.updated_at:
+    merged_task.title = remote_task.title
+    merged_task.description = remote_task.description
+    merged_task.priority = remote_task.priority
+    merged_task.due_date = remote_task.due_date
+    should_update_local = True
+
+This checks which version of a task was updated most recently. If the remote task is newer, its information is copied into the merged task and the local version is marked for updating.
+
+For example:
+
+Local:   Updated at 10:00
+Remote:  Updated at 11:00
+
+The remote version is newer, so the local task will need to be updated.
+
+I also learned that the algorithm has special rules. A task marked as DONE takes priority over an incomplete task, even if the incomplete version is newer. Tags are also combined from both versions so that information is not lost.
+
+The algorithm uses several programming concepts, including dictionaries, sets, loops, conditional statements, deep copying, timestamps, and Boolean flags. Its main processing is approximately O(n) because it checks each unique task once.
+
+The main thing I learned from this exercise is that understanding an algorithm is easier when I break it into smaller sections and test it with real examples. I also learned that algorithms can contain both general rules and specific business rules. In this case, the general rule is that the newer task usually wins, while the special rule is that completed tasks should remain completed.
+
+This exercise improved my ability to read unfamiliar code, follow control flow, identify edge cases, and explain what the code is doing in my own words.
