@@ -372,3 +372,495 @@ as completed directly
 The AI also helped me identify a possible improvement: invalid status values could cause an error, so additional validation could make the function safer.
 
 Using Prompt 2 helped me understand the intent behind the code and how the different decisions work, rather than just reading the Python syntax.
+
+# Task Management System
+
+A Python-based command-line task management system that allows users to create, organise, update, track and delete tasks. The system stores task information in a JSON file and provides features for managing priorities, statuses, due dates and tags.
+
+## Features
+
+* Create new tasks
+* View all tasks
+* Filter tasks by status
+* Filter tasks by priority
+* View overdue tasks
+* Update task status
+* Update task priority
+* Update task due dates
+* Add tags to tasks
+* Remove tags from tasks
+* View individual task details
+* Delete tasks
+* View task statistics
+* Track recently completed tasks
+* Identify overdue tasks
+* Calculate task importance and priority
+* Merge local and remote task lists
+
+## Technologies Used
+
+* **Python 3.11 or higher**
+* Python `argparse` for command-line arguments
+* Python `datetime` for dates and times
+* Python `json` for storing task data
+* Python `enum` for task statuses and priorities
+* Python `unittest` for testing
+
+The project uses Python's standard library and does not require additional external packages.
+
+## Requirements
+
+Before running the project, make sure Python 3.11 or higher is installed.
+
+Check your Python version:
+
+```bash
+python --version
+```
+
+You should see a version similar to:
+
+```text
+Python 3.11.x
+```
+
+or a newer version.
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+### 2. Open the project folder
+
+```bash
+cd task-manager
+```
+
+### 3. Verify Python
+
+```bash
+python --version
+```
+
+No additional packages are required because the project uses Python's standard library.
+
+## Project Structure
+
+```text
+task-manager/
+│
+├── cli.py
+├── models.py
+├── storage.py
+├── merge.py
+├── tasks.json
+│
+├── task_manager/
+│   ├── __init__.py
+│   └── ...
+│
+└── tests/
+    └── ...
+```
+
+### Main Files
+
+**`cli.py`**
+
+Contains the command-line interface and `TaskManager` functionality. It handles operations such as creating, listing, updating and deleting tasks.
+
+**`models.py`**
+
+Contains the task model, task statuses and task priorities.
+
+**`storage.py`**
+
+Handles loading, saving, adding, updating and deleting tasks from the JSON storage file.
+
+**`merge.py`**
+
+Handles merging local and remote task lists and resolving conflicts between different versions of the same task.
+
+**`tasks.json`**
+
+Stores task information in JSON format.
+
+**`tests/`**
+
+Contains automated tests used to check that the application behaves correctly.
+
+## Running the Application
+
+Open a terminal in the project directory and run:
+
+```bash
+python cli.py
+```
+
+The CLI displays the available commands and options.
+
+## Usage
+
+### Create a Task
+
+Create a basic task:
+
+```bash
+python cli.py create "Complete Python assignment"
+```
+
+You can also provide a description, priority, due date and tags depending on the available CLI options.
+
+Example:
+
+```bash
+python cli.py create "Complete Python assignment" --priority 3 --due-date 2026-09-01
+```
+
+### List Tasks
+
+To display your tasks:
+
+```bash
+python cli.py list
+```
+
+### Filter by Status
+
+You can filter tasks based on their status:
+
+```bash
+python cli.py list --status TODO
+```
+
+Possible statuses include:
+
+```text
+TODO
+IN_PROGRESS
+REVIEW
+DONE
+```
+
+### Filter by Priority
+
+Tasks can also be filtered according to priority:
+
+```bash
+python cli.py list --priority 3
+```
+
+The priority levels are:
+
+```text
+1 = LOW
+2 = MEDIUM
+3 = HIGH
+4 = URGENT
+```
+
+### View Overdue Tasks
+
+To display tasks that are past their due date:
+
+```bash
+python cli.py list --overdue
+```
+
+### Update Task Status
+
+To change a task's status:
+
+```bash
+python cli.py update-status <task-id> DONE
+```
+
+For example:
+
+```bash
+python cli.py update-status 1 DONE
+```
+
+When a task is marked as `DONE`, the system records the completion time.
+
+### Update Priority
+
+To change a task's priority:
+
+```bash
+python cli.py update-priority <task-id> 4
+```
+
+For example:
+
+```bash
+python cli.py update-priority 1 4
+```
+
+This changes the task to **URGENT** priority.
+
+### Update Due Date
+
+To change a task's due date:
+
+```bash
+python cli.py update-due-date <task-id> 2026-09-10
+```
+
+The date must use the following format:
+
+```text
+YYYY-MM-DD
+```
+
+### Add a Tag
+
+Add a tag to a task:
+
+```bash
+python cli.py add-tag <task-id> work
+```
+
+The system checks whether the tag already exists before adding it, preventing duplicate tags.
+
+### Remove a Tag
+
+Remove a tag:
+
+```bash
+python cli.py remove-tag <task-id> work
+```
+
+### View Task Details
+
+To view information about one task:
+
+```bash
+python cli.py show <task-id>
+```
+
+### Delete a Task
+
+To delete a task:
+
+```bash
+python cli.py delete <task-id>
+```
+
+### View Statistics
+
+To view task statistics:
+
+```bash
+python cli.py stats
+```
+
+The statistics include:
+
+* Total number of tasks
+* Tasks by status
+* Tasks by priority
+* Number of overdue tasks
+* Tasks completed during the last seven days
+
+## Task Priorities
+
+The system uses four priority levels:
+
+| Value | Priority |
+| ----- | -------- |
+| 1     | LOW      |
+| 2     | MEDIUM   |
+| 3     | HIGH     |
+| 4     | URGENT   |
+
+Higher-priority tasks can be identified using the task priority system and importance-scoring functionality.
+
+## Task Statuses
+
+Tasks can have one of four statuses:
+
+| Status      | Description                       |
+| ----------- | --------------------------------- |
+| TODO        | Task has not been started         |
+| IN_PROGRESS | Task is currently being worked on |
+| REVIEW      | Task is waiting for review        |
+| DONE        | Task has been completed           |
+
+## Task Importance
+
+The system includes an algorithm that calculates the importance of a task.
+
+The score considers factors such as:
+
+* Task priority
+* Due date
+* Whether the task is overdue
+* Task status
+* Important tags such as `urgent`, `critical` or `blocker`
+* How recently the task was updated
+
+Completed tasks receive a lower importance score because they no longer require action.
+
+## Task List Merging
+
+The project also contains functionality for merging local and remote task lists.
+
+The merging algorithm:
+
+1. Finds all unique task IDs.
+2. Identifies tasks that only exist locally.
+3. Identifies tasks that only exist remotely.
+4. Compares tasks that exist in both locations.
+5. Uses update times to resolve most conflicts.
+6. Gives completed tasks special priority.
+7. Combines tags from both versions.
+8. Determines which tasks need to be created or updated on each side.
+
+This allows task information to be synchronised without unnecessarily losing changes.
+
+## Error Handling
+
+The system performs validation for certain inputs.
+
+For example, an invalid date produces:
+
+```text
+Invalid date format. Use YYYY-MM-DD
+```
+
+Dates must therefore be entered using:
+
+```text
+2026-09-01
+```
+
+rather than:
+
+```text
+09/01/2026
+```
+
+Invalid status or priority values may also need to be handled correctly according to the command being used.
+
+## Running Tests
+
+The project uses Python's built-in `unittest` framework.
+
+Run the tests with:
+
+```bash
+python -m unittest discover tests
+```
+
+For more detailed test output:
+
+```bash
+python -m unittest discover -v tests
+```
+
+## Troubleshooting
+
+### Python is not recognised
+
+If the terminal says that Python is not recognised, check that Python is installed and added to your system PATH.
+
+Run:
+
+```bash
+python --version
+```
+
+### The program cannot find a module
+
+Make sure you are running the command from the correct project directory.
+
+For example:
+
+```bash
+cd task-manager
+python cli.py
+```
+
+Also check that the required Python files are in the correct folders.
+
+### Invalid Date Format
+
+If you receive:
+
+```text
+Invalid date format. Use YYYY-MM-DD
+```
+
+check that the date follows this format:
+
+```text
+YYYY-MM-DD
+```
+
+For example:
+
+```text
+2026-09-15
+```
+
+### Tasks are not being saved
+
+Check that the application has permission to create or modify the JSON storage file and that the storage path is correct.
+
+### Tests are not running
+
+Make sure you are running the test command from the project directory:
+
+```bash
+python -m unittest discover -v tests
+```
+
+Also check that the test files are located inside the `tests` directory.
+
+## Contributing
+
+If another developer wants to contribute to the project, they should:
+
+1. Create a copy or fork of the repository.
+2. Create a separate branch for their changes.
+3. Make and test their changes.
+4. Run the existing tests.
+5. Commit the changes with a clear commit message.
+6. Push the branch.
+7. Submit a pull request.
+
+Example:
+
+```bash
+git checkout -b feature/task-improvement
+```
+
+## Future Improvements
+
+Possible improvements to the project include:
+
+* Adding a graphical user interface
+* Adding more automated tests
+* Improving error handling
+* Adding task search functionality
+* Adding recurring tasks
+* Adding user authentication
+* Adding cloud-based synchronisation
+* Improving the natural-language task parser
+* Adding export options such as CSV
+* Adding more detailed task reports
+
+## License
+
+This project was created as part of a programming and AI-assisted development exercise.
+
+## Author
+
+**Lesedi**
+
+Python Task Management System – 2026
