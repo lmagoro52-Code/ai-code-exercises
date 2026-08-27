@@ -320,3 +320,55 @@ The algorithm uses several programming concepts, including dictionaries, sets, l
 The main thing I learned from this exercise is that understanding an algorithm is easier when I break it into smaller sections and test it with real examples. I also learned that algorithms can contain both general rules and specific business rules. In this case, the general rule is that the newer task usually wins, while the special rule is that completed tasks should remain completed.
 
 This exercise improved my ability to read unfamiliar code, follow control flow, identify edge cases, and explain what the code is doing in my own words.
+
+Code Documentation
+
+For this exercise, I selected the TaskManager class from my Task Management System. I used AI prompts to help me understand and document what the different methods do.
+
+The TaskManager class is responsible for managing tasks, including creating, listing, updating, deleting and viewing tasks. It also handles task priorities, statuses, due dates, tags and task statistics.
+
+I learned that the class works together with TaskStorage. The TaskManager handles the task-related logic, while TaskStorage handles saving and retrieving the information.
+
+One example I documented was create_task(), which creates a new task, assigns its priority and optional due date and tags, and then saves it. Another important method is update_task_status(), which changes a task's status and uses mark_as_done() when a task is completed.
+
+I also looked at get_statistics(), which calculates the total number of tasks, tasks by status and priority, overdue tasks, and tasks completed during the last seven days.
+
+Using Prompt 2 helped me understand the purpose and logic behind the code, rather than just explaining individual lines. I identified some possible improvements, such as adding better error handling for invalid status and priority values and adding more consistent documentation to each method.
+
+Overall, this exercise taught me that good documentation should explain what the code does, what information it needs, what it returns, and how it fits into the larger application. It also showed me how AI can help me understand unfamiliar code and identify areas that could be improved.
+
+Example of How I Used Prompt 2
+
+I used Prompt 2 on the TaskManager class to understand the purpose and logic behind the code. Instead of only asking what each line does, I asked the AI to explain what the class was trying to accomplish, break down the logic, identify edge cases, suggest comments, and recommend possible improvements.
+
+For example, I provided the update_task_status() function:
+
+def update_task_status(self, task_id, new_status_value):
+    new_status = TaskStatus(new_status_value)
+    if new_status == TaskStatus.DONE:
+        task = self.storage.get_task(task_id)
+        if task:
+            task.mark_as_done()
+            self.storage.save()
+            return True
+    else:
+        return self.storage.update_task(task_id, status=new_status)
+
+The AI explained that the function is responsible for changing the status of an existing task. It also pointed out that completing a task is handled differently from other status changes because the program calls mark_as_done() and saves the task.
+
+I learned that the code follows this logic:
+
+New status received
+       ↓
+Is the status DONE?
+    ↙        ↘
+  Yes         No
+   ↓           ↓
+Mark task    Update status
+as completed directly
+   ↓           ↓
+ Save task   Return result
+
+The AI also helped me identify a possible improvement: invalid status values could cause an error, so additional validation could make the function safer.
+
+Using Prompt 2 helped me understand the intent behind the code and how the different decisions work, rather than just reading the Python syntax.
